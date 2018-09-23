@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-11-23T22:47:46 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cuenta_transacciones" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="6b2435aa-08cc-4606-9a01-96d8f074c8bb">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Contabilidad Adapter "/>
+	<parameter name="subajuste" class="java.lang.Boolean" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="subid_cuenta" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="fecha_inicio" class="java.sql.Date" isForPrompting="false"/>
+	<parameter name="fecha_final" class="java.sql.Date" isForPrompting="false"/>
+	<parameter name="periodo" class="java.lang.Integer" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT l.fecha,
+	t.cargo,
+	t.abono,
+	t.id_cuenta,
+	(SELECT cp.monto_inicial
+  FROM cuenta_periodo cp
+WHERE cp.id_periodo= $P{periodo}  AND cp.id_cuenta= $P{subid_cuenta}  AND cp.tipo_periodo=  $P{subajuste}  ) as monto_actual,
+	t.id_cuenta
+FROM transaccion t
+	INNER JOIN libro_diario l ON 
+	 t.id_libro_diario = l.id_libro_diario
+WHERE l.fecha BETWEEN  $P{fecha_inicio} AND $P{fecha_final} 
+	AND t.id_cuenta=$P{subid_cuenta} 
+ORDER BY l.fecha ASC]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="cargo" class="java.lang.Double"/>
+	<field name="abono" class="java.lang.Double"/>
+	<field name="monto_actual" class="java.lang.Double"/>
+	<field name="id_cuenta" class="java.lang.Integer"/>
+	<variable name="suma_cargo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{cargo}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="suma_abono" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{abono}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.0]]></initialValueExpression>
+	</variable>
+	<variable name="suma" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{monto_actual}+$V{suma_cargo}+$V{suma_abono}]]></variableExpression>
+	</variable>
+	<group name="id_cuenta">
+		<groupExpression><![CDATA[$F{id_cuenta}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="111" height="20" uuid="c86f4a32-27bd-4a01-b04a-f9fbf87fb2f5"/>
+				<text><![CDATA[fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="0" width="111" height="20" uuid="cd4bf482-0762-471a-8e73-12f2243c72ee"/>
+				<text><![CDATA[cargo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="0" width="88" height="20" uuid="429459be-f024-40dc-9c90-0dbe94e782d3"/>
+				<text><![CDATA[abono]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="88" height="20" uuid="3b253784-994f-42e6-ae8a-92e63f2d8b1d"/>
+				<text><![CDATA[monto_actual]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="-2" y="0" width="111" height="20" uuid="fe8cdd69-2a2d-43d7-9888-3f271d80ecab"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="0" width="111" height="20" uuid="ecfe1930-cf2d-4589-93e2-f66522a77025"/>
+				<textFieldExpression><![CDATA[$F{cargo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="0" width="90" height="20" uuid="aed5dca0-5815-4a5c-8d8c-db1462d99b97"/>
+				<textFieldExpression><![CDATA[$F{abono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="311" y="0" width="87" height="20" uuid="b5d0ef8c-d987-4f1a-931c-b8e2f64f0092"/>
+				<textFieldExpression><![CDATA[$V{suma}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

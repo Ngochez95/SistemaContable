@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-11-27T18:25:34 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro_diario" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c99038ce-da1d-402c-9903-b688e66f40e4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Contabilidad Adapter "/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="fechaInicio" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="fechaFinal" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT l.id_libro_diario,
+	l.fecha,
+	l.tipo_libro_diario,
+	l.total,
+	l.concepto
+FROM libro_diario l
+WHERE l.fecha BETWEEN  $P{fechaInicio} AND $P{fechaFinal}]]>
+	</queryString>
+	<field name="id_libro_diario" class="java.lang.Integer"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="tipo_libro_diario" class="java.lang.Boolean"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="concepto" class="java.lang.String"/>
+	<group name="id_libro_diario">
+		<groupExpression><![CDATA[$F{id_libro_diario}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement x="160" y="10" width="281" height="41" uuid="7f079ad1-477e-4b63-a500-af9c8e7e608a"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LIBROS DIARIO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="22" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="81" splitType="Stretch">
+			<textField>
+				<reportElement x="60" y="0" width="130" height="28" uuid="47060d64-b7bf-4d8c-ba90-fe6c3f7a24c1"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="100" height="28" uuid="7620392c-ed08-4dce-a4c1-0e574f967c15"/>
+				<textFieldExpression><![CDATA[$F{tipo_libro_diario}?"NO AJUSTE":"AJUSTE"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="431" y="0" width="84" height="28" uuid="0d480dc4-939e-4a06-9f08-1747f6e030b3"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-1" y="0" width="61" height="28" uuid="f3f8efde-d655-4c48-82a4-efe1cf51bf7c"/>
+				<text><![CDATA[fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="0" width="100" height="28" uuid="2f2a53d1-30b2-42fe-9be7-7252fb9db444"/>
+				<text><![CDATA[tipo_libro_diario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="41" height="28" uuid="10e5d2bd-6a1c-4386-b576-7b8acfa21b92"/>
+				<text><![CDATA[total]]></text>
+			</staticText>
+			<subreport>
+				<reportElement mode="Transparent" x="60" y="30" width="451" height="51" uuid="25bdb623-2874-44a2-a0c5-30e963c91348"/>
+				<subreportParameter name="diario">
+					<subreportParameterExpression><![CDATA[$F{id_libro_diario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR}+"transaccion.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<textField>
+				<reportElement x="138" y="0" width="138" height="30" uuid="5b0695f0-3d06-451b-917f-98649d88af6c"/>
+				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="138" height="30" uuid="d88377b3-518e-405c-b616-8e6e511bed84"/>
+				<text><![CDATA[concepto]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

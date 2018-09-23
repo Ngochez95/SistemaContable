@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.1.final using JasperReports Library version 6.3.1  -->
+<!-- 2017-11-27T18:24:43 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="transaccion" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="10" uuid="8ee88a38-c179-4cbc-975e-2b79e060d09c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Contabilidad Adapter "/>
+	<parameter name="diario" class="java.lang.Integer" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+    c.nombre_cuenta,
+    t.id_libro_diario,
+	t.cargo,
+	t.abono
+FROM transaccion t
+	INNER JOIN cuenta c ON 
+	 t.id_cuenta = c.id_cuenta
+WHERE t.id_libro_diario= $P{diario}]]>
+	</queryString>
+	<field name="nombre_cuenta" class="java.lang.String"/>
+	<field name="id_libro_diario" class="java.lang.Integer"/>
+	<field name="cargo" class="java.math.BigDecimal"/>
+	<field name="abono" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="0" width="160" height="20" uuid="c16994af-e537-4248-a17a-936253c267a1"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CUENTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="130" height="20" uuid="8b95574c-7974-4f03-b869-6f3297bd327b"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CARGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="120" height="20" uuid="49bd8828-8143-44d3-a56c-ead2183e8e52"/>
+				<textElement textAlignment="Left" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ABONO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="1" width="160" height="21" uuid="480eef85-b0ac-41b6-b3ff-2ffe5eee57d5"/>
+				<textFieldExpression><![CDATA[$F{nombre_cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="1" width="130" height="21" uuid="f4f6347a-b9c5-4a55-9f5e-7bf7d6e22516"/>
+				<textFieldExpression><![CDATA[$F{cargo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="1" width="120" height="21" uuid="87ae9351-e699-43eb-b726-4fb69c45024e"/>
+				<textFieldExpression><![CDATA[$F{abono}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
